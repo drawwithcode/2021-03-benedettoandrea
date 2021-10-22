@@ -1,8 +1,141 @@
-html, body {
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+html,
+body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  transition: background 250ms ease-in-out, color 2500ms ease-in-out;
+}
+
+body {
+  position: relative;
 }
 
 canvas {
   display: block;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: 0px;
+  padding: 10px;
+  color: var(--text);
+}
+
+/* temporary styling/future-proofing
+.subheader {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0px;
+  padding: 10px;
+  color: var(--text);
+}
+*/
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0px;
+  padding: 10px;
+  color: var(--text);
+}
+
+.upperGrid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: 0px;
+  padding: 10px;
+  color: var(--text);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0px;
+}
+
+.lowerGrid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0px;
+  padding: 10px;
+  color: var(--text);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0px;
+}
+
+/* temporary paragraph styling
+p {
+  font-family: "Inter", sans-serif;
+  font-size: small;
+  font-weight: 300;
+  color: var(--text);
+  border: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0px;
+  padding: 5px;
+  transition: color 250ms ease-in-out;
+}
+*/
+
+input {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  color: var(--text);
+  border: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  padding: 5px;
+  transition: color 250ms ease-in-out;
+}
+
+/* responsiveness */
+@media only screen and (max-device-width: 480px) {
+  .header,
+  .footer {
+    display: none;
+  }
+}
+
+@media only screen and (min-device-width: 481px) {
+  .lowerGrid,
+  .upperGrid {
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* themes */
+:root {
+  --black: #000000;
+  --white: #ffffff;
+}
+
+.light {
+  --bg: var(--white);
+  --text: var(--black);
+}
+
+.dark {
+  --bg: var(--black);
+  --text: var(--white);
 }
