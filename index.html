@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <!--meta tags-->
     <meta charset="utf-8" />
@@ -24,8 +24,44 @@
     <script src="libraries/p5.sound.min.js"></script>
     <!--p5 script-->
     <script src="sketch.js"></script>
+    <!--theming script-->
+    <script src="theme.js"></script>
   </head>
   <body>
     <div class="container" id="container"></div>
+    <!--desktop/large screens-->
+    <div class="footer">
+      <input
+        type="button"
+        value="switch theme"
+        onclick="toggleTheme();switchBackground()"
+      />
+      <input type="button" value="start/stop" onclick="startStop()" />
+      <input
+        type="button"
+        value="save a screenshot"
+        onclick="saveScreenshot()"
+      />
+    </div>
+    <!--mobile-->
+    <div class="lowerGrid">
+      <div>
+        <input type="button" value="start/stop" onclick="startStop()" />
+      </div>
+      <div>
+        <input
+          type="button"
+          value="switch theme"
+          onclick="toggleTheme();switchBackground()"
+        />
+      </div>
+      <div>
+        <input
+          type="button"
+          value="save a screenshot"
+          onclick="saveScreenshot()"
+        />
+      </div>
+    </div>
   </body>
 </html>
