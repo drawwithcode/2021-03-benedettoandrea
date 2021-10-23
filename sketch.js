@@ -9,22 +9,18 @@ var subd3 = 36;
 
 var soundFile, amplitude;
 
-var canvasDiv, canvasHeight, sketchCanvas;
-
 var octaves = 8;
 var falloff = 0.5;
 
 function preload() {
   soundFile = loadSound(
-    "../assets/music/1996 - Autechre -  live @ flex 96 (remastered).mp3"
+    "./assets/music/1996 - Autechre -  live @ flex 96 (remastered).mp3"
   );
-  imageFile = loadImage("../assets/images/BASSCAD EP.jpg");
+  imageFile = loadImage("./assets/images/Incunabula.jpg");
 }
 
 function setup() {
-  canvasDiv = document.getElementById("container");
-  canvasHeight = canvasDiv.offsetHeight;
-  sketchCanvas = createCanvas(windowWidth, canvasHeight).parent("container");
+  createCanvas(windowWidth, windowHeight).parent("container");
 
   frameRate(60);
   angleMode(DEGREES);
@@ -40,8 +36,8 @@ function setup() {
 }
 
 function draw() {
-  clear();
-  //background(backgroundToggle);
+  //clear();
+  background(backgroundToggle);
   var level = amplitude.getLevel();
 
   var i1 = 0;
@@ -62,7 +58,7 @@ function draw() {
     i1 = 0;
     for (
       var y1 = 0 + width / subd1 / 2;
-      y1 < canvasHeight - width / subd1 / 2;
+      y1 < windowHeight - (width / subd1) * 2;
       y1 += width / subd1
     ) {
       i1++;
@@ -145,15 +141,13 @@ function draw() {
     } else if (backgroundToggle === 0) {
       blendMode(DIFFERENCE);
     }
-    image(imageFile, 0, 0, windowWidth, canvasHeight);
+    image(imageFile, 0, 0, windowWidth, windowHeight);
   }
   pop();
 }
 
 function windowResized() {
-  canvasDiv = document.getElementById("container");
-  canvasHeight = canvasDiv.offsetHeight;
-  resizeCanvas(windowWidth, canvasHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function switchBackground() {
@@ -174,4 +168,8 @@ function startStop() {
     soundFile.loop();
     loop();
   }
+}
+
+function saveScreenshot() {
+  saveCanvas("myCanvas", "png");
 }

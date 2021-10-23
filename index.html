@@ -28,40 +28,52 @@
     <script src="theme.js"></script>
   </head>
   <body>
-    <div class="container" id="container">
-      <div id="p5_loading" class="loadingclass">
-        <!--desktop/large screens-->
-        <div class="header">
+    <div id="p5_loading" class="loadingclass">
+      <!--desktop/large screens-->
+      <div class="header">
+        <input type="button" value="æ visualizer is loading" />
+      </div>
+      <!--mobile-->
+      <div class="upperGrid">
+        <div>
           <input type="button" value="æ visualizer is loading" />
         </div>
-        <!--mobile-->
-        <div class="upperGrid">
-          <div>
-            <input type="button" value="æ visualizer is loading" />
-          </div>
-        </div>
       </div>
     </div>
-    <!--desktop/large screens-->
-    <div class="footer">
-      <input
-        type="button"
-        value="switch theme"
-        onclick="toggleTheme();switchBackground()"
-      />
-      <input type="button" value="start/stop" onclick="startStop()" />
-    </div>
-    <!--mobile-->
-    <div class="lowerGrid">
-      <div>
-        <input type="button" value="start/stop" onclick="startStop()" />
-      </div>
-      <div>
+    <div class="container" id="container">
+      <!--desktop/large screens-->
+      <div class="footer">
         <input
           type="button"
           value="switch theme"
           onclick="toggleTheme();switchBackground()"
         />
+        <input type="button" value="start/stop" onclick="startStop()" />
+        <input
+          type="button"
+          value="save a screenshot"
+          onclick="saveScreenshot()"
+        />
+      </div>
+      <!--mobile-->
+      <div class="lowerGrid">
+        <div>
+          <input type="button" value="start/stop" onclick="startStop()" />
+        </div>
+        <div>
+          <input
+            type="button"
+            value="switch theme"
+            onclick="toggleTheme();switchBackground()"
+          />
+        </div>
+        <div>
+          <input
+            type="button"
+            value="save a screenshot"
+            onclick="saveScreenshot()"
+          />
+        </div>
       </div>
     </div>
   </body>

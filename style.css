@@ -10,6 +10,7 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--text);
   background: var(--bg);
+  transition: background 250ms ease-in-out, color 2500ms ease-in-out;
 }
 
 body {
@@ -20,9 +21,14 @@ canvas {
   display: block;
 }
 
+.loadingclass {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 .container {
   position: relative;
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 
@@ -37,13 +43,12 @@ canvas {
 }
 
 .footer {
-  position: relative;
-  height: 10%;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   margin: 0px;
-  padding: 10px; */
+  padding: 10px;
   color: var(--text);
 }
 
@@ -74,14 +79,13 @@ canvas {
 }
 
 input {
-  
-  bottom: 0;
   font-family: "Inter", sans-serif;
   font-style: normal;
   color: var(--text);
   border: rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0);
   padding: 5px;
+  transition: color 250ms ease-in-out;
 }
 
 /* responsiveness */
