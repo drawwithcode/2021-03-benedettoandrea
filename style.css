@@ -39,7 +39,7 @@ canvas {
 .footer {
   position: relative;
   height: 10%;
-  /* left: 0;
+  left: 0;
   right: 0;
   bottom: 0;
   margin: 0px;
@@ -74,7 +74,7 @@ canvas {
 }
 
 input {
-  position: relative;
+  
   bottom: 0;
   font-family: "Inter", sans-serif;
   font-style: normal;

@@ -2,25 +2,29 @@
 // audio: Autechre - 1996-02-15 Austria-Vienna (https://archive.org/details/Autechre1996-02-15)
 
 var backgroundToggle = 255;
+
 var subd1 = 12;
 var subd2 = 24;
 var subd3 = 36;
+
 var soundFile, amplitude;
 
 var canvasDiv, canvasHeight, sketchCanvas;
 
+var octaves = 8;
+var falloff = 0.5;
+
 function preload() {
   soundFile = loadSound(
-    "../assets/1996 - Autechre -  live @ flex 96 (remastered).mp3"
+    "../assets/music/1996 - Autechre -  live @ flex 96 (remastered).mp3"
   );
+  imageFile = loadImage("../assets/images/BASSCAD EP.jpg");
 }
 
 function setup() {
   canvasDiv = document.getElementById("container");
   canvasHeight = canvasDiv.offsetHeight;
-
   sketchCanvas = createCanvas(windowWidth, canvasHeight).parent("container");
-  console.log(sketchCanvas);
 
   frameRate(60);
   angleMode(DEGREES);
@@ -31,11 +35,12 @@ function setup() {
   amplitude = new p5.Amplitude();
   amplitude.smooth(1);
   amplitude.setInput(soundFile);
+
+  soundFile.loop();
 }
 
 function draw() {
   clear();
-  //background("yellow");
   //background(backgroundToggle);
   var level = amplitude.getLevel();
 
@@ -43,13 +48,15 @@ function draw() {
   var i2 = 0;
   var i3 = 0;
 
+  noiseDetail(octaves, falloff);
+
   // subdivision #1
   var varDim1 = map(
     level,
     0,
     1,
-    width / subd1 - windowWidth / 500,
-    width / subd1 - windowWidth / 1000
+    width / subd1 - windowWidth / 10,
+    width / subd1 - windowWidth / 500
   );
   for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
     i1 = 0;
@@ -59,38 +66,45 @@ function draw() {
       y1 += width / subd1
     ) {
       i1++;
-      //console.log("A" + i);
       push();
-      //fill("black");
-      rect(x1, y1, varDim1, varDim1);
-      // ellipse(x1, y1, varDim1);
-      // fill("white");
-      // text("A" + i, x1, y1);
+      let noiseColor1 = noise(
+        frameCount / 2500 + x1 / 250,
+        frameCount / 2500 + y1 / 250
+      );
+      if (Math.floor(noiseColor1 * 10) < 5) {
+      } else {
+        ellipse(x1, y1, varDim1);
+      }
+      // rect(x1, y1, varDim1, varDim1);
       pop();
     }
   }
-  //console.log("reset" + i);
 
   //subdivision #2
   var varDim2 = map(
     level,
     0,
     1,
-    width / subd2 - windowWidth / 500,
-    width / subd2 - windowWidth / 1000
+    width / subd2 - windowWidth / 100,
+    width / subd2 - windowWidth / 5000
   );
   for (var x2 = 0 + width / subd2 / 2; x2 < width; x2 += width / subd2) {
     i2 = 0;
     for (var y2 = 0 + width / subd2 / 2; i2 < i1 * 2; y2 += width / subd2) {
-      push();
       i2++;
-      //console.log("B" + i2);
-      fill("blue");
+      push();
+      let noiseColor2 = noise(
+        frameCount / 2500 + x2 / 250,
+        frameCount / 2500 + y2 / 250
+      );
       // rect(x2, y2, varDim2);
-      ellipse(x2, y2, varDim2);
-      // fill("yellow");
-      // textSize(8);
-      // text("B" + i2, x2, y2);
+      if (
+        Math.floor(noiseColor2 * 10) < 5 &&
+        Math.floor(noiseColor2 * 10) > 2
+      ) {
+        ellipse(x2, y2, varDim2);
+      } else {
+      }
       pop();
     }
   }
@@ -106,26 +120,40 @@ function draw() {
   for (var x3 = 0 + width / subd3 / 2; x3 < width; x3 += width / subd3) {
     i3 = 0;
     for (var y3 = 0 + width / subd3 / 2; i3 < i1 * 3; y3 += width / subd3) {
-      push();
       i3++;
-      fill("red");
-      ellipse(x3, y3, varDim3);
-      // fill("yellow");
-      // textSize(8);
-      // text("C" + i3, x3, y3);
+      push();
+      let noiseColor3 = noise(
+        frameCount / 2500 + x3 / 250,
+        frameCount / 2500 + y3 / 250
+      );
+      // rect(x3, y3, varDim3);
+      if (
+        Math.floor(noiseColor3 * 10) < 9 &&
+        Math.floor(noiseColor3 * 10) > 5
+      ) {
+        ellipse(x3, y3, varDim3);
+      } else {
+      }
       pop();
     }
   }
+  push();
+  if (level > 0.1) {
+    if (backgroundToggle === 255) {
+      filter(INVERT);
+      blendMode(DIFFERENCE);
+    } else if (backgroundToggle === 0) {
+      blendMode(DIFFERENCE);
+    }
+    image(imageFile, 0, 0, windowWidth, canvasHeight);
+  }
+  pop();
 }
 
 function windowResized() {
-  //sketchCanvas.resizeCanvas(windowWidth, canvasHeight);
   canvasDiv = document.getElementById("container");
   canvasHeight = canvasDiv.offsetHeight;
-
   resizeCanvas(windowWidth, canvasHeight);
-  // = createCanvas(windowWidth, canvasHeight).parent("container");
-  console.log(sketchCanvas);
 }
 
 function switchBackground() {
@@ -146,8 +174,4 @@ function startStop() {
     soundFile.loop();
     loop();
   }
-}
-
-function saveScreenshot() {
-  saveCanvas("myCanvas", "png");
 }
