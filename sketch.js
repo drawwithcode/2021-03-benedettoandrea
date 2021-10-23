@@ -13,9 +13,7 @@ var octaves = 8;
 var falloff = 0.5;
 
 function preload() {
-  soundFile = loadSound(
-    "./assets/music/1996 - Autechre -  live @ flex 96 (remastered).mp3"
-  );
+  soundFile = loadSound("./assets/music/Autechre-1996-02-15Austria-vienna.ogg");
   imageFile = loadImage("./assets/images/Incunabula.jpg");
 }
 
