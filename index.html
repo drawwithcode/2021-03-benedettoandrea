@@ -43,41 +43,55 @@
     <div class="container" id="container" preload="auto">
       <audio id="soundFile" loop>
         <source
-          src="./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
+          id="track"
+          src="./assets/tracks/Autechre-1996-02-15Austria-vienna.ogg"
           type="audio/ogg"
         />
       </audio>
       <!--desktop/large screens-->
       <div class="footer">
+        <input type="button" value="play/pause" onclick="togglePlay()" />
+        <input type="button" value="flashing images" onclick="toggleImages()" />
         <input
           type="button"
           value="switch theme"
           onclick="togglePageTheme();toggleP5Theme()"
         />
-        <input type="button" value="start/stop" onclick="togglePlay()" />
         <input
           type="button"
           value="save a screenshot"
           onclick="saveScreenshot()"
         />
+        <input type="button" value="change track" onclick="toggleAudio()" />
       </div>
       <!--mobile-->
       <div class="lowerGrid">
         <div>
-          <input type="button" value="start/stop" onclick="togglePlay()" />
-        </div>
-        <div>
-          <input
-            type="button"
-            value="switch theme"
-            onclick="togglePageTheme();toggleP5Theme()"
-          />
+          <input type="button" value="play/pause" onclick="togglePlay()" />
         </div>
         <div>
           <input
             type="button"
             value="save a screenshot"
             onclick="saveScreenshot()"
+          />
+        </div>
+
+        <div>
+          <input
+            type="button"
+            value="flashing images"
+            onclick="toggleImages()"
+          />
+        </div>
+        <div>
+          <input type="button" value="change track" onclick="toggleAudio()" />
+        </div>
+        <div>
+          <input
+            type="button"
+            value="switch theme"
+            onclick="togglePageTheme();toggleP5Theme()"
           />
         </div>
       </div>
