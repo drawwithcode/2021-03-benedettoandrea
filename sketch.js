@@ -1,5 +1,5 @@
 // audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR.
-// audio: Autechre - 1996-02-15 Austria-Vienna (https://archive.org/details/Autechre1996-02-15)
+// audio: Autechre - 2000-XX-XX Germany-Berlin - 16 (https://archive.org/details/Autechre2003-03-30)
 
 var backgroundToggle = 255;
 
@@ -48,7 +48,7 @@ function draw() {
   var bass = fft.getEnergy(20, 400);
   var mid = fft.getEnergy(400, 2600);
   var high = fft.getEnergy(2600, 5200);
-  var treble = fft.getEnergy(5200, 1400);
+  // var treble = fft.getEnergy(5200, 1400);
 
   fft.analyze();
   peakDetect.update(fft);
@@ -146,6 +146,7 @@ function draw() {
     }
   }
 
+  // image manipulation
   push();
   if (mid > 150 && mid < 200) {
     console.log("altoo");
@@ -155,28 +156,8 @@ function draw() {
     } else if (backgroundToggle === 0) {
       blendMode(DIFFERENCE);
     }
-    push();
-    //tint(255, treble);
     image(imageFile, 0, 0, windowWidth, windowHeight);
-    pop();
   }
-
-  // if (peakDetect.isDetected) {
-  //   if (backgroundToggle === 255) {
-  //     filter(INVERT);
-  //     blendMode(DIFFERENCE);
-  //   } else if (backgroundToggle === 0) {
-  //     blendMode(DIFFERENCE);
-  //   }
-  //   push();
-  //   //alphaEff *= 10;
-  //   tint(255, alphaEff * 255);
-  //   image(imageFile, 0, 0, windowWidth, windowHeight);
-  //   pop();
-  // } else {
-  //   //image(imageFile, 0, 0, windowWidth, windowHeight);
-  //   // tint(255, 128 - frameCount);
-  // }
   pop();
 }
 
