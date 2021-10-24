@@ -41,6 +41,12 @@
       </div>
     </div>
     <div class="container" id="container">
+      <audio class="myAudio" id="myAudio" loop>
+        <source
+          src="./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
+          type="audio/ogg"
+        />
+      </audio>
       <!--desktop/large screens-->
       <div class="footer">
         <input
@@ -48,7 +54,7 @@
           value="switch theme"
           onclick="toggleTheme();switchBackground()"
         />
-        <input type="button" value="start/stop" onclick="startStop()" />
+        <input type="button" value="start/stop" onclick="togglePlay()" />
         <input
           type="button"
           value="save a screenshot"

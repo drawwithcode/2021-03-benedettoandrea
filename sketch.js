@@ -14,11 +14,21 @@ var falloff = 0.5;
 
 var alphaEff = 1;
 
+//var audio = new Audio();
+//audio.src = "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg";
+
+//console.log(soundFile);
+
 function preload() {
-  soundFile = loadSound(
-    "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
-  );
+  //soundFile = loadSound(
+  //  "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
+  //);
   imageFile = loadImage("./assets/images/AE_LIVE.jpg");
+  //soundFile = p.select("#audio");
+
+  window.onload = function () {
+    document.getElementById("myAudio").play();
+  };
 }
 
 function setup() {
@@ -32,14 +42,26 @@ function setup() {
   fill(10);
   noStroke();
 
-  amplitude = new p5.Amplitude();
-  amplitude.smooth(1);
-  amplitude.setInput(soundFile);
+  //amplitude = new p5.Amplitude();
+  //amplitude.smooth(1);
+  //amplitude.setInput(soundFile);
 
   fft = new p5.FFT();
   peakDetect = new p5.PeakDetect("treble");
 
-  soundFile.loop();
+  //soundFile.loop();
+
+  // audio.controls = true;
+  // audio.autoplay = true;
+
+  soundFile = document.getElementById("myAudio");
+
+  let context = getAudioContext();
+  // wire all media elements up to the p5.sound AudioContext
+  for (let elem of selectAll("audio").concat(selectAll("video"))) {
+    let mediaSource = context.createMediaElementSource(elem.elt);
+    mediaSource.connect(p5.soundOut);
+  }
 }
 
 function draw() {
@@ -182,12 +204,22 @@ function switchBackground() {
 }
 
 function startStop() {
-  if (soundFile.isPlaying() && isLooping()) {
-    soundFile.pause();
-    noLoop();
+  //if (soundFile.isPlaying() && isLooping()) {
+  //  soundFile.pause();
+  //  noLoop();
+  //} else {
+  //  soundFile.loop();
+  //  loop();
+  //}
+}
+
+var isPlaying = false;
+
+function togglePlay() {
+  if (soundFile.paused) {
+    soundFile.play();
   } else {
-    soundFile.loop();
-    loop();
+    soundFile.pause();
   }
 }
 
