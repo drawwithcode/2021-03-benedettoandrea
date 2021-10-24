@@ -24,7 +24,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight).parent("container");
 
-  // pixelDensity(1);
+  pixelDensity(1);
 
   frameRate(60);
   angleMode(DEGREES);
@@ -149,7 +149,6 @@ function draw() {
   // image manipulation
   push();
   if (mid > 150 && mid < 200) {
-    console.log("altoo");
     if (backgroundToggle === 255) {
       filter(INVERT);
       blendMode(DIFFERENCE);
