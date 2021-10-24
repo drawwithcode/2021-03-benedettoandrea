@@ -1,6 +1,7 @@
 // audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR.
 // audio: Autechre - 2000-XX-XX Germany-Berlin - 16 (https://archive.org/details/Autechre2003-03-30)
 
+// theme selector
 var backgroundToggle = 255;
 
 var subd1 = 12;
@@ -14,46 +15,20 @@ var falloff = 0.5;
 
 var alphaEff = 1;
 
-//var audio = new Audio();
-//audio.src = "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg";
-
-//console.log(soundFile);
-
-// window.onload = function () {
-//   document.getElementById("soundFile").play();
-// };
-
 function preload() {
-  //soundFile = loadSound(
-  //  "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
-  //);
   imageFile = loadImage("./assets/images/AE_LIVE.jpg");
-  //soundFile = p.select("#audio");
 }
 
 function setup() {
+  // canvas initialisation
   createCanvas(windowWidth, windowHeight).parent("container");
-
-  //pixelDensity(1);
-
-  //frameRate(60);
   angleMode(DEGREES);
   rectMode(CENTER);
   fill(10);
   noStroke();
 
-  //amplitude = new p5.Amplitude();
-  //amplitude.smooth(1);
-  //amplitude.setInput(soundFile);
-
   fft = new p5.FFT();
   peakDetect = new p5.PeakDetect("treble");
-
-  //soundFile.loop();
-
-  // audio.controls = true;
-  // audio.autoplay = true;
-
   soundFile = document.getElementById("soundFile");
 
   let context = getAudioContext();
@@ -77,9 +52,23 @@ function draw() {
 
   var i1 = 0;
   var i2 = 0;
-  var i3 = 0;
+  // var i3 = 0;
 
   noiseDetail(octaves, falloff);
+
+  // image manipulation
+  push();
+  if (mid > 150 && mid < 200) {
+    // raster effect: disabled because of extreme lag if the device isn't pretty powerful.
+    if (backgroundToggle === 255) {
+      //filter(INVERT);
+      //blendMode(DIFFERENCE);
+    } else if (backgroundToggle === 0) {
+      //blendMode(DIFFERENCE);
+    }
+    image(imageFile, 0, 0, windowWidth, windowHeight);
+  }
+  pop();
 
   // subdivision #1
   var varDim1 = map(
@@ -89,28 +78,55 @@ function draw() {
     (width / subd1) * 0.05,
     width / subd1 - windowWidth / 1000
   );
-  for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
-    i1 = 0;
-    for (
-      var y1 = 0 + width / subd1 / 2;
-      y1 < windowHeight - (width / subd1) * 2;
-      y1 += width / subd1
-    ) {
-      i1++;
-      push();
-      let noiseColor1 = noise(
-        frameCount / 2500 + x1 / 250,
-        frameCount / 2500 + y1 / 250
-      );
-      if (noiseColor1 * 10 > 2.5 && noiseColor1 * 10 < 5) {
-        if (noiseColor1 * 10 > 3.75 && noiseColor1 * 10 < 5) {
-          rect(x1, y1, varDim1, varDim1);
+  if (width < height) {
+    for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
+      i1 = 0;
+      for (
+        var y1 = 0 + width / subd1 / 2;
+        y1 < windowHeight - (width / subd1) * 4;
+        y1 += width / subd1
+      ) {
+        i1++;
+        push();
+        let noiseColor1 = noise(
+          frameCount / 2500 + x1 / 250,
+          frameCount / 2500 + y1 / 250
+        );
+        if (noiseColor1 * 10 > 2.5 && noiseColor1 * 10 < 5) {
+          if (noiseColor1 * 10 > 3.75 && noiseColor1 * 10 < 5) {
+            rect(x1, y1, varDim1, varDim1);
+          } else {
+            ellipse(x1, y1, varDim1);
+          }
         } else {
-          ellipse(x1, y1, varDim1);
         }
-      } else {
+        pop();
       }
-      pop();
+    }
+  } else {
+    for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
+      i1 = 0;
+      for (
+        var y1 = 0 + width / subd1 / 2;
+        y1 < windowHeight - (width / subd1) * 2;
+        y1 += width / subd1
+      ) {
+        i1++;
+        push();
+        let noiseColor1 = noise(
+          frameCount / 2500 + x1 / 250,
+          frameCount / 2500 + y1 / 250
+        );
+        if (noiseColor1 * 10 > 2.5 && noiseColor1 * 10 < 5) {
+          if (noiseColor1 * 10 > 3.75 && noiseColor1 * 10 < 5) {
+            rect(x1, y1, varDim1, varDim1);
+          } else {
+            ellipse(x1, y1, varDim1);
+          }
+        } else {
+        }
+        pop();
+      }
     }
   }
 
@@ -144,6 +160,7 @@ function draw() {
   }
 
   // subdivision #3
+  /*
   var varDim3 = map(
     high,
     0,
@@ -167,19 +184,7 @@ function draw() {
       pop();
     }
   }
-
-  // image manipulation
-  push();
-  if (mid > 150 && mid < 200) {
-    if (backgroundToggle === 255) {
-      filter(INVERT);
-      blendMode(DIFFERENCE);
-    } else if (backgroundToggle === 0) {
-      blendMode(DIFFERENCE);
-    }
-    image(imageFile, 0, 0, windowWidth, windowHeight);
-  }
-  pop();
+  */
 }
 
 // generate a random integer from range, inclusive
@@ -193,7 +198,7 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function switchBackground() {
+function toggleP5Theme() {
   if (backgroundToggle === 255) {
     backgroundToggle = 0;
     fill(255);
@@ -203,23 +208,13 @@ function switchBackground() {
   }
 }
 
-function startStop() {
-  //if (soundFile.isPlaying() && isLooping()) {
-  //  soundFile.pause();
-  //  noLoop();
-  //} else {
-  //  soundFile.loop();
-  //  loop();
-  //}
-}
-
-//var isPlaying = false;
-
 function togglePlay() {
   if (soundFile.paused) {
     soundFile.play();
+    loop();
   } else {
     soundFile.pause();
+    noLoop();
   }
 }
 
