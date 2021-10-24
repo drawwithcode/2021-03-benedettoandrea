@@ -24,7 +24,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight).parent("container");
 
-  pixelDensity(1);
+  // pixelDensity(1);
 
   frameRate(60);
   angleMode(DEGREES);

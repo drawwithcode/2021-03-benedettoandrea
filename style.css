@@ -10,7 +10,6 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--text);
   background: var(--bg);
-  transition: background 250ms ease-in-out, color 2500ms ease-in-out;
 }
 
 body {
@@ -85,7 +84,6 @@ input {
   border: rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0);
   padding: 5px;
-  transition: color 250ms ease-in-out;
 }
 
 /* responsiveness */
