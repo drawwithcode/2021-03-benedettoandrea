@@ -19,24 +19,24 @@ var alphaEff = 1;
 
 //console.log(soundFile);
 
+// window.onload = function () {
+//   document.getElementById("soundFile").play();
+// };
+
 function preload() {
   //soundFile = loadSound(
   //  "./assets/music/Autechre-2000-xx-xxGermany-berlin-16.ogg"
   //);
   imageFile = loadImage("./assets/images/AE_LIVE.jpg");
   //soundFile = p.select("#audio");
-
-  window.onload = function () {
-    document.getElementById("myAudio").play();
-  };
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight).parent("container");
 
-  pixelDensity(1);
+  //pixelDensity(1);
 
-  frameRate(60);
+  //frameRate(60);
   angleMode(DEGREES);
   rectMode(CENTER);
   fill(10);
@@ -54,7 +54,7 @@ function setup() {
   // audio.controls = true;
   // audio.autoplay = true;
 
-  soundFile = document.getElementById("myAudio");
+  soundFile = document.getElementById("soundFile");
 
   let context = getAudioContext();
   // wire all media elements up to the p5.sound AudioContext
@@ -213,7 +213,7 @@ function startStop() {
   //}
 }
 
-var isPlaying = false;
+//var isPlaying = false;
 
 function togglePlay() {
   if (soundFile.paused) {
@@ -225,4 +225,10 @@ function togglePlay() {
 
 function saveScreenshot() {
   saveCanvas("myCanvas", "png");
+}
+
+function touchStarted() {
+  if (getAudioContext().state !== "running") {
+    getAudioContext().resume();
+  }
 }
