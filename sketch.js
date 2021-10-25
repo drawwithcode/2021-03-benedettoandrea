@@ -11,9 +11,11 @@ var currentTheme = 255;
 var flashingImages = 1;
 
 // subdivision values for the grid system
-const subd1 = 12;
-const subd2 = 24;
+const subd1Horizontal = 12;
+const subd2Horizontal = 24;
 // const subd3 = 36; (unused)
+const subd1Vertical = 6;
+const subd2Vertical = 12;
 
 // audio
 var soundFile, amplitude, fft;
@@ -59,6 +61,7 @@ function setup() {
   randomImage();
 
   // audio setup
+  // some reference can be found here: https://stackoverflow.com/questions/68310022/load-sound-of-live-playing-audio-onto-p5js
   fft = new p5.FFT();
   peakDetect = new p5.PeakDetect(5200, 14000, 0.5);
   soundFile = document.getElementById("soundFile");
@@ -90,39 +93,26 @@ function draw() {
   var i2 = 0;
   // var i3 = 0; (unused)
 
-  // image manipulation
-  if (flashingImages == 1) {
-    push();
-    if (mid > 127 && mid < 255) {
-      // raster effect: disabled most of it because it can cause extreme lag if a device isn't pretty powerful.
-      if (currentTheme === 255) {
-        //filter(INVERT);
-        blendMode(DIFFERENCE);
-      } else if (currentTheme === 0) {
-        //blendMode(DIFFERENCE);
-      }
-      image(imageFile[imageShow], 0, 0, windowWidth, windowHeight);
-    }
-    if (peakDetect.isDetected) {
-      randomImage();
-    }
-    pop();
-  }
-  // subdivision #1
-  var varDim1 = map(
-    bass,
-    0,
-    255,
-    (width / subd1) * 0.005,
-    (width / subd1) * 1.25
-  );
-  if (width < height) {
-    for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
+  // generate moving graphics with a responsive approach
+  if (width > height) {
+    // subdivision #1
+    var varDim1 = map(
+      bass,
+      0,
+      255,
+      (width / subd1Horizontal) * 0.005,
+      (width / subd1Horizontal) * 1.25
+    );
+    for (
+      var x1 = 0 + width / subd1Horizontal / 2;
+      x1 < width;
+      x1 += width / subd1Horizontal
+    ) {
       i1 = 0;
       for (
-        var y1 = 0 + width / subd1 / 2;
-        y1 < windowHeight - (width / subd1) * 4; // vertical screens
-        y1 += width / subd1
+        var y1 = 0 + width / subd1Horizontal / 2;
+        y1 < windowHeight - (width / subd1Horizontal) * 2; // horizontal screens
+        y1 += width / subd1Horizontal
       ) {
         i1++;
         push();
@@ -135,6 +125,43 @@ function draw() {
             rect(x1, y1, varDim1, varDim1);
           } else {
             ellipse(x1, y1, varDim1);
+          }
+        } else {
+        }
+        pop();
+      }
+    }
+
+    // subdivision #2
+    var varDim2 = map(
+      mid,
+      0,
+      255,
+      (width / subd2Horizontal) * 0.005,
+      width / subd2Horizontal - windowWidth / 1000
+    );
+    for (
+      var x2 = 0 + width / subd2Horizontal / 2;
+      x2 < width;
+      x2 += width / subd2Horizontal
+    ) {
+      i2 = 0;
+      for (
+        var y2 = 0 + width / subd2Horizontal / 2;
+        i2 < i1 * 2;
+        y2 += width / subd2Horizontal
+      ) {
+        i2++;
+        push();
+        let noiseColor2 = noise(
+          frameCount / 2500 + x2 / 250,
+          frameCount / 2500 + y2 / 250
+        );
+        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.9375) {
+          if (noiseColor2 * 10 > 6.3125 && noiseColor2 * 10 < 6.9375) {
+            rect(x2, y2, varDim2);
+          } else {
+            ellipse(x2, y2, varDim2);
           }
         } else {
         }
@@ -142,12 +169,24 @@ function draw() {
       }
     }
   } else {
-    for (var x1 = 0 + width / subd1 / 2; x1 < width; x1 += width / subd1) {
+    // subdivision #1
+    var varDim1 = map(
+      bass,
+      0,
+      255,
+      (width / subd1Vertical) * 0.005,
+      (width / subd1Vertical) * 1.25
+    );
+    for (
+      var x1 = 0 + width / subd1Vertical / 2;
+      x1 < width;
+      x1 += width / subd1Vertical
+    ) {
       i1 = 0;
       for (
-        var y1 = 0 + width / subd1 / 2;
-        y1 < windowHeight - (width / subd1) * 2; // horizontal screens
-        y1 += width / subd1
+        var y1 = 0 + width / subd1Vertical / 2;
+        y1 < windowHeight - (width / subd1Vertical) * 2; // vertical screens
+        y1 += width / subd1Vertical
       ) {
         i1++;
         push();
@@ -166,34 +205,42 @@ function draw() {
         pop();
       }
     }
-  }
 
-  //subdivision #2
-  var varDim2 = map(
-    mid,
-    0,
-    255,
-    (width / subd2) * 0.005,
-    width / subd2 - windowWidth / 1000
-  );
-  for (var x2 = 0 + width / subd2 / 2; x2 < width; x2 += width / subd2) {
-    i2 = 0;
-    for (var y2 = 0 + width / subd2 / 2; i2 < i1 * 2; y2 += width / subd2) {
-      i2++;
-      push();
-      let noiseColor2 = noise(
-        frameCount / 2500 + x2 / 250,
-        frameCount / 2500 + y2 / 250
-      );
-      if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.9375) {
-        if (noiseColor2 * 10 > 6.3125 && noiseColor2 * 10 < 6.9375) {
-          rect(x2, y2, varDim2);
+    // subdivision #2
+    var varDim2 = map(
+      mid,
+      0,
+      255,
+      (width / subd2Vertical) * 0.005,
+      width / subd2Vertical - windowWidth / 1000
+    );
+    for (
+      var x2 = 0 + width / subd2Vertical / 2;
+      x2 < width;
+      x2 += width / subd2Vertical
+    ) {
+      i2 = 0;
+      for (
+        var y2 = 0 + width / subd2Vertical / 2;
+        i2 < i1 * 2;
+        y2 += width / subd2Vertical
+      ) {
+        i2++;
+        push();
+        let noiseColor2 = noise(
+          frameCount / 2500 + x2 / 250,
+          frameCount / 2500 + y2 / 250
+        );
+        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.9375) {
+          if (noiseColor2 * 10 > 6.3125 && noiseColor2 * 10 < 6.9375) {
+            rect(x2, y2, varDim2);
+          } else {
+            ellipse(x2, y2, varDim2);
+          }
         } else {
-          ellipse(x2, y2, varDim2);
         }
-      } else {
+        pop();
       }
-      pop();
     }
   }
 
@@ -223,6 +270,25 @@ function draw() {
     }
   }
   */
+
+  // image manipulation
+  if (flashingImages == 1) {
+    push();
+    if (mid > 127 && mid < 255) {
+      // raster effect: disabled the filter because it can cause extreme lag if a device isn't pretty powerful (aka no dedicated GPU).
+      if (currentTheme === 255) {
+        // filter(INVERT);
+        blendMode(DIFFERENCE);
+      } else if (currentTheme === 0) {
+        blendMode(DIFFERENCE);
+      }
+      image(imageFile[imageShow], 0, 0, windowWidth, windowHeight);
+    }
+    if (peakDetect.isDetected) {
+      randomImage();
+    }
+    pop();
+  }
 }
 
 // generate a random integer from range, inclusive
@@ -241,6 +307,7 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
+// toggle the theme between light (255) and dark (0)
 function toggleP5Theme() {
   if (currentTheme === 255) {
     currentTheme = 0;
@@ -251,6 +318,7 @@ function toggleP5Theme() {
   }
 }
 
+// play or pause the current track
 function togglePlay() {
   if (soundFile.paused) {
     soundFile.play();
@@ -263,10 +331,12 @@ function togglePlay() {
   }
 }
 
+// save a screenshot
 function saveScreenshot() {
   saveCanvas("myCanvas", "png");
 }
 
+// toogle flashing images
 function toggleImages() {
   if (flashingImages === 1) {
     flashingImages = 0;
@@ -275,6 +345,7 @@ function toggleImages() {
   }
 }
 
+// change current track
 function toggleAudio() {
   var track = document.getElementById("track");
   trackNo++;
@@ -284,6 +355,7 @@ function toggleAudio() {
   console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
   track.src = "./assets/tracks/" + trackList.tracks[trackNo];
   document.getElementById("soundFile").load();
+  // set the state of the track, so that if the sketch is paused the track isn't going to start
   if (trackState == "play") {
     soundFile.play();
     loop();
@@ -293,6 +365,8 @@ function toggleAudio() {
   }
 }
 
+// https://p5js.org/reference/#/p5/getAudioContext
+// "Some browsers require users to startAudioContext with a user gesture, such as touchStarted in the example below".
 function touchStarted() {
   if (getAudioContext().trackState !== "running") {
     getAudioContext().resume();
