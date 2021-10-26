@@ -1,4 +1,4 @@
-// audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR (https://www.thedesignersrepublic.com/ae-vs-tdr).
+// audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR (https://www.thedesignersrepublic.com/ae-vs-tdr; https://autechre.warp.net/merch/77199-autechre-poster).
 /* tracks:
    1) Autechre Live at Flex on 1996-02-15 (https://archive.org/details/Autechre1996-02-15)
    2) Autechre - 1999-07-05 Peel Session - 2 Blifil (https://archive.org/details/Autechre1999-07-06)
@@ -54,7 +54,6 @@ function setup() {
   for (let i = 0; i < imageList.images.length; i++) {
     imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
   }
-
   console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
 
   // select a random image insie the array to show before starting
@@ -63,7 +62,7 @@ function setup() {
   // audio setup
   // some reference can be found here: https://stackoverflow.com/questions/68310022/load-sound-of-live-playing-audio-onto-p5js
   fft = new p5.FFT();
-  peakDetect = new p5.PeakDetect(5200, 14000, 0.5);
+  peakDetect = new p5.PeakDetect(5200, 14000, 0.5); // treble
   soundFile = document.getElementById("soundFile");
   let context = getAudioContext();
   // wire all media elements up to the p5.sound AudioContext
@@ -84,10 +83,12 @@ function draw() {
   peakDetect.update(fft);
 
   // frequencies to analyse
-  var bass = fft.getEnergy(20, 400);
+  // https://github.com/processing/p5.js-sound/blob/main/src/fft.js
+  var bass = fft.getEnergy(20, 140);
+  var lowMid = fft.getEnergy(140, 400);
   var mid = fft.getEnergy(400, 2600);
-  // var high = fft.getEnergy(2600, 5200);
-  // var treble = fft.getEnergy(5200, 14000);
+  var highMid = fft.getEnergy(2600, 5200);
+  var treble = fft.getEnergy(5200, 14000);
 
   var i1 = 0;
   var i2 = 0;
@@ -95,9 +96,17 @@ function draw() {
 
   // generate moving graphics with a responsive approach
   if (width > height) {
+    // horizontal screens
     // subdivision #1
-    var varDim1 = map(
+    let varDimBass1 = map(
       bass,
+      0,
+      255,
+      (width / subd1Horizontal) * 0.005,
+      width / subd1Horizontal - windowWidth / 2000
+    );
+    let varDimLowMid = map(
+      lowMid,
       0,
       255,
       (width / subd1Horizontal) * 0.005,
@@ -111,7 +120,7 @@ function draw() {
       i1 = 0;
       for (
         var y1 = 0 + width / subd1Horizontal / 2;
-        y1 < windowHeight - (width / subd1Horizontal) * 2; // horizontal screens
+        y1 < windowHeight - (width / subd1Horizontal) * 2;
         y1 += width / subd1Horizontal
       ) {
         i1++;
@@ -120,11 +129,15 @@ function draw() {
           frameCount / 2500 + x1 / 250,
           frameCount / 2500 + y1 / 250
         );
-        if (noiseColor1 * 10 > 2.625 && noiseColor1 * 10 < 5.625) {
-          if (noiseColor1 * 10 > 5 && noiseColor1 * 10 < 5.625) {
-            rect(x1, y1, varDim1, varDim1);
+        if (noiseColor1 * 10 > 2.75 && noiseColor1 * 10 < 5.5) {
+          if (noiseColor1 * 10 > 4.125 && noiseColor1 * 10 < 5.5) {
+            if (noiseColor1 * 10 > 4.8125 && noiseColor1 * 10 < 5.5) {
+              rect(x1, y1, varDimBass1, varDimBass1);
+              ellipse(x1, y1, varDimLowMid);
+            }
+            rect(x1, y1, varDimBass1, varDimBass1);
           } else {
-            ellipse(x1, y1, varDim1);
+            ellipse(x1, y1, varDimLowMid);
           }
         } else {
         }
@@ -133,12 +146,26 @@ function draw() {
     }
 
     // subdivision #2
-    var varDim2 = map(
-      mid,
+    let varDimBass2 = map(
+      bass,
       0,
       255,
       (width / subd2Horizontal) * 0.005,
-      width / subd2Horizontal - windowWidth / 1000
+      width / subd2Horizontal - windowWidth / 2000
+    );
+    let varDimHighMid = map(
+      highMid,
+      0,
+      255,
+      (width / subd2Horizontal) * 0.005,
+      (width / subd2Horizontal) * 1.25
+    );
+    let varDimTreble = map(
+      treble,
+      0,
+      255,
+      (width / subd2Horizontal) * 0.005,
+      (width / subd2Horizontal) * 1.25
     );
     for (
       var x2 = 0 + width / subd2Horizontal / 2;
@@ -157,11 +184,14 @@ function draw() {
           frameCount / 2500 + x2 / 250,
           frameCount / 2500 + y2 / 250
         );
-        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.9375) {
-          if (noiseColor2 * 10 > 6.3125 && noiseColor2 * 10 < 6.9375) {
-            rect(x2, y2, varDim2);
+        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.375) {
+          if (noiseColor2 * 10 > 5.6875 && noiseColor2 * 10 < 6.375) {
+            if (noiseColor2 * 10 > 6.03125 && noiseColor2 * 10 < 6.71875) {
+              ellipse(x2, y2, varDimTreble);
+            }
+            rect(x2, y2, varDimBass2);
           } else {
-            ellipse(x2, y2, varDim2);
+            ellipse(x2, y2, varDimHighMid);
           }
         } else {
         }
@@ -169,9 +199,17 @@ function draw() {
       }
     }
   } else {
+    // vertical screens
     // subdivision #1
-    var varDim1 = map(
+    let varDimBass1 = map(
       bass,
+      0,
+      255,
+      (width / subd1Vertical) * 0.005,
+      width / subd1Vertical - windowWidth / 375
+    );
+    let varDimLowMid = map(
+      lowMid,
       0,
       255,
       (width / subd1Vertical) * 0.005,
@@ -185,7 +223,7 @@ function draw() {
       i1 = 0;
       for (
         var y1 = 0 + width / subd1Vertical / 2;
-        y1 < windowHeight - (width / subd1Vertical) * 2; // vertical screens
+        y1 < windowHeight - (width / subd1Vertical) * 2;
         y1 += width / subd1Vertical
       ) {
         i1++;
@@ -194,11 +232,15 @@ function draw() {
           frameCount / 2500 + x1 / 250,
           frameCount / 2500 + y1 / 250
         );
-        if (noiseColor1 * 10 > 2.625 && noiseColor1 * 10 < 5.625) {
-          if (noiseColor1 * 10 > 5 && noiseColor1 * 10 < 5.625) {
-            rect(x1, y1, varDim1, varDim1);
+        if (noiseColor1 * 10 > 2.75 && noiseColor1 * 10 < 5.5) {
+          if (noiseColor1 * 10 > 4.125 && noiseColor1 * 10 < 5.5) {
+            if (noiseColor1 * 10 > 4.8125 && noiseColor1 * 10 < 5.5) {
+              rect(x1, y1, varDimBass1, varDimBass1);
+              ellipse(x1, y1, varDimLowMid);
+            }
+            rect(x1, y1, varDimBass1, varDimBass1);
           } else {
-            ellipse(x1, y1, varDim1);
+            ellipse(x1, y1, varDimLowMid);
           }
         } else {
         }
@@ -207,12 +249,26 @@ function draw() {
     }
 
     // subdivision #2
-    var varDim2 = map(
-      mid,
+    let varDimBass2 = map(
+      bass,
       0,
       255,
       (width / subd2Vertical) * 0.005,
-      width / subd2Vertical - windowWidth / 1000
+      width / subd2Vertical - windowWidth / 375
+    );
+    let varDimHighMid = map(
+      highMid,
+      0,
+      255,
+      (width / subd2Vertical) * 0.005,
+      (width / subd2Vertical) * 1.25
+    );
+    let varDimTreble = map(
+      treble,
+      0,
+      255,
+      (width / subd2Vertical) * 0.005,
+      (width / subd2Vertical) * 1.25
     );
     for (
       var x2 = 0 + width / subd2Vertical / 2;
@@ -231,11 +287,14 @@ function draw() {
           frameCount / 2500 + x2 / 250,
           frameCount / 2500 + y2 / 250
         );
-        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.9375) {
-          if (noiseColor2 * 10 > 6.3125 && noiseColor2 * 10 < 6.9375) {
-            rect(x2, y2, varDim2);
+        if (noiseColor2 * 10 > 5 && noiseColor2 * 10 < 6.375) {
+          if (noiseColor2 * 10 > 5.6875 && noiseColor2 * 10 < 6.375) {
+            if (noiseColor2 * 10 > 6.03125 && noiseColor2 * 10 < 6.71875) {
+              ellipse(x2, y2, varDimTreble);
+            }
+            rect(x2, y2, varDimBass2);
           } else {
-            ellipse(x2, y2, varDim2);
+            ellipse(x2, y2, varDimHighMid);
           }
         } else {
         }
