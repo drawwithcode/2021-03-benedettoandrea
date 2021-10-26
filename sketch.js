@@ -10,19 +10,15 @@
 var currentTheme = 255;
 var flashingImages = 1;
 
-// subdivision values for the grid system
-const subd1Horizontal = 12;
-const subd2Horizontal = 24;
-// const subd3 = 36; (unused)
-const subd1Vertical = 6;
-const subd2Vertical = 12;
-
-// audio
-var soundFile, amplitude, fft;
-
 // noise
 const octaves = 8;
 const falloff = 0.5;
+
+// subdivision values for the grid system
+const subd1Horizontal = 12;
+const subd2Horizontal = 24;
+const subd1Vertical = 6;
+const subd2Vertical = 12;
 
 // assets
 var imageFile = new Array();
@@ -34,12 +30,11 @@ var trackList = new Array();
 var trackState = "pause";
 var trackCurrentlyPlaying = 0;
 var trackNo = 0;
-
-// var alphaEff = 1; (unused)
+var soundFile, amplitude, fft;
 
 function preload() {
-  imageList = loadJSON("images.json");
   trackList = loadJSON("tracks.json");
+  imageList = loadJSON("images.json");
 }
 
 function setup() {
@@ -50,14 +45,8 @@ function setup() {
   fill(10);
   noStroke();
 
-  // load images inside an array
-  for (let i = 0; i < imageList.images.length; i++) {
-    imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
-  }
-  console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
-
-  // select a random image insie the array to show before starting
-  randomImage();
+  // noise setup
+  noiseDetail(octaves, falloff);
 
   // audio setup
   // some reference can be found here: https://stackoverflow.com/questions/68310022/load-sound-of-live-playing-audio-onto-p5js
@@ -71,12 +60,22 @@ function setup() {
     mediaSource.connect(p5.soundOut);
   }
 
-  // noise setup
-  noiseDetail(octaves, falloff);
+  // load images inside an array
+  for (let i = 0; i < imageList.images.length; i++) {
+    imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
+  }
+  console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
+
+  // select a random image insie the array to show before starting
+  randomImage();
 }
 
 function draw() {
   background(currentTheme);
+
+  // grid system counters
+  var i1 = 0;
+  var i2 = 0;
 
   // audio analysis
   fft.analyze();
@@ -89,10 +88,6 @@ function draw() {
   var mid = fft.getEnergy(400, 2600);
   var highMid = fft.getEnergy(2600, 5200);
   var treble = fft.getEnergy(5200, 14000);
-
-  var i1 = 0;
-  var i2 = 0;
-  // var i3 = 0; (unused)
 
   // generate moving graphics with a responsive approach
   if (width > height) {
@@ -303,33 +298,6 @@ function draw() {
     }
   }
 
-  // subdivision #3 (unused)
-  /*
-  var varDim3 = map(
-    high,
-    0,
-    255,
-    (width / subd3) * 0.05,
-    width / subd3 - windowWidth / 1000
-  );
-  for (var x3 = 0 + width / subd3 / 2; x3 < width; x3 += width / subd3) {
-    i3 = 0;
-    for (var y3 = 0 + width / subd3 / 2; i3 < i1 * 3; y3 += width / subd3) {
-      i3++;
-      push();
-      let noiseColor3 = noise(
-        frameCount / 2500 + x3 / 250,
-        frameCount / 2500 + y3 / 250
-      );
-      if (noiseColor3 * 10 > 7.5 && noiseColor3 * 10 < 10) {
-        ellipse(x3, y3, varDim3);
-      } else {
-      }
-      pop();
-    }
-  }
-  */
-
   // image manipulation
   if (flashingImages == 1) {
     push();
@@ -377,19 +345,6 @@ function toggleP5Theme() {
   }
 }
 
-// play or pause the current track
-function togglePlay() {
-  if (soundFile.paused) {
-    soundFile.play();
-    loop();
-    trackState = "play";
-  } else {
-    soundFile.pause();
-    noLoop();
-    trackState = "pause";
-  }
-}
-
 // save a screenshot
 function saveScreenshot() {
   saveCanvas("myCanvas", "png");
@@ -401,6 +356,19 @@ function toggleImages() {
     flashingImages = 0;
   } else if (flashingImages === 0) {
     flashingImages = 1;
+  }
+}
+
+// play or pause the current track
+function togglePlay() {
+  if (soundFile.paused) {
+    soundFile.play();
+    loop();
+    trackState = "play";
+  } else {
+    soundFile.pause();
+    noLoop();
+    trackState = "pause";
   }
 }
 
