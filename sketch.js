@@ -8,7 +8,6 @@
 
 // theme selector (255 = light, 0 = dark)
 var currentTheme = 255;
-var flashingImages = 1;
 
 // noise
 const octaves = 8;
@@ -25,6 +24,10 @@ var imageFile = new Array();
 var imageList;
 var imageShow;
 var trackList = new Array();
+
+// control variables
+var flashingImages = 1;
+var releaseTitles = false;
 
 // audio control
 var trackState = "pause";
@@ -48,6 +51,14 @@ function setup() {
   // noise setup
   noiseDetail(octaves, falloff);
 
+  // load images inside an array
+  for (let i = 0; i < imageList.images.length; i++) {
+    imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
+  }
+
+  // select a random image insie the array to show before starting
+  randomImage();
+
   // audio setup
   // some reference can be found here: https://stackoverflow.com/questions/68310022/load-sound-of-live-playing-audio-onto-p5js
   fft = new p5.FFT();
@@ -60,14 +71,9 @@ function setup() {
     mediaSource.connect(p5.soundOut);
   }
 
-  // load images inside an array
-  for (let i = 0; i < imageList.images.length; i++) {
-    imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
-  }
-  console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
-
-  // select a random image insie the array to show before starting
-  randomImage();
+  console.log(
+    "track no. " + (trackNo + 1) + " (" + trackList.tracks[trackNo] + ")"
+  );
 }
 
 function draw() {
@@ -302,14 +308,16 @@ function draw() {
   if (flashingImages == 1) {
     push();
     if (mid > 127 && mid < 255) {
-      // raster effect: disabled the filter because it can cause extreme lag if a device isn't pretty powerful (aka no dedicated GPU).
+      // raster effects
       if (currentTheme === 255) {
-        // filter(INVERT);
         blendMode(DIFFERENCE);
       } else if (currentTheme === 0) {
         blendMode(DIFFERENCE);
       }
       image(imageFile[imageShow], 0, 0, windowWidth, windowHeight);
+      releaseTitles = true;
+    } else {
+      releaseTitles = false;
     }
     if (peakDetect.isDetected) {
       randomImage();
@@ -327,7 +335,9 @@ function getRandomInt(min, max) {
 
 function randomImage() {
   imageShow = getRandomInt(0, imageFile.length - 1);
-  console.log("image no. " + getRandomInt(0, imageFile.length - 1));
+  console.log(
+    "image no. " + (imageShow + 1) + " (" + imageList.images[imageShow] + ")"
+  );
 }
 
 function windowResized() {
@@ -347,15 +357,35 @@ function toggleP5Theme() {
 
 // save a screenshot
 function saveScreenshot() {
-  saveCanvas("myCanvas", "png");
+  let date = new Date();
+  let currentDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1) +
+    "-" +
+    date.getDate() +
+    "-" +
+    date.getHours() +
+    "-" +
+    date.getMinutes() +
+    "-" +
+    date.getSeconds();
+  let releaseTitle = imageList.images[imageShow].slice(0, -4);
+  if (releaseTitles == true) {
+    saveCanvas("AE_" + releaseTitle + "_" + currentDate, "png");
+  } else {
+    saveCanvas("AE_" + currentDate, "png");
+  }
 }
 
 // toogle flashing images
 function toggleImages() {
   if (flashingImages === 1) {
     flashingImages = 0;
+    releaseTitles = false;
   } else if (flashingImages === 0) {
     flashingImages = 1;
+    releaseTitles = true;
   }
 }
 
@@ -379,7 +409,9 @@ function toggleAudio() {
   if (trackNo == trackList.tracks.length) {
     trackNo = 0;
   }
-  console.log("track no. " + trackNo + " (" + trackList.tracks[trackNo] + ")");
+  console.log(
+    "track no. " + (trackNo + 1) + " (" + trackList.tracks[trackNo] + ")"
+  );
   track.src = "./assets/tracks/" + trackList.tracks[trackNo];
   document.getElementById("soundFile").load();
   // set the state of the track, so that if the sketch is paused the track isn't going to start
