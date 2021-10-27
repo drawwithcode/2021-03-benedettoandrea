@@ -1,4 +1,10 @@
-// audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR (https://www.thedesignersrepublic.com/ae-vs-tdr; https://autechre.warp.net/merch/77199-autechre-poster).
+// audiovisual experience based on Autechre's elseq 1–5, AE_LIVE and NTS Sessions 1–4 visual language, originally designed by tDR.
+
+/* design reference:
+   1) https://www.thedesignersrepublic.com/ae-vs-tdr
+   2) https://autechre.warp.net/merch/77199-autechre-poster)
+*/
+
 /* tracks:
    1) Autechre Live at Flex on 1996-02-15 (https://archive.org/details/Autechre1996-02-15)
    2) Autechre - 1999-07-05 Peel Session - 2 Blifil (https://archive.org/details/Autechre1999-07-06)
