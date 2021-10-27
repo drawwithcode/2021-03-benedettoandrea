@@ -308,12 +308,7 @@ function draw() {
   if (flashingImages == 1) {
     push();
     if (mid > 127 && mid < 255) {
-      // raster effects
-      if (currentTheme === 255) {
-        blendMode(DIFFERENCE);
-      } else if (currentTheme === 0) {
-        blendMode(DIFFERENCE);
-      }
+      blendMode(DIFFERENCE);
       image(imageFile[imageShow], 0, 0, windowWidth, windowHeight);
       releaseTitles = true;
     } else {
@@ -351,7 +346,7 @@ function toggleP5Theme() {
     fill(255);
   } else if (currentTheme === 0) {
     currentTheme = 255;
-    fill(10);
+    fill(0);
   }
 }
 
