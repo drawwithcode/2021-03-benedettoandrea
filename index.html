@@ -9,38 +9,27 @@
     />
     <meta name="theme-color" content="#ffffff" class="light" />
     <!--title-->
-    <title>Sketch</title>
-    <!--font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <title>æ visualizer</title>
     <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="normalize.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <!--p5 libraries-->
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
-    <!--p5 script-->
-    <script src="sketch.js"></script>
     <!--theming script-->
     <script src="theme.js"></script>
+    <!--p5 script-->
+    <script src="sketch.js"></script>
   </head>
   <body>
     <div id="p5_loading" class="loadingclass">
-      <!--desktop/large screens-->
       <div class="header">
-        <input type="button" value="æ visualizer is loading" />
-      </div>
-      <!--mobile-->
-      <div class="upperGrid">
-        <div>
-          <input type="button" value="æ visualizer is loading" />
+        <div class="loadingMessage">
+          <span>æ visualizer is loading </span>
         </div>
       </div>
     </div>
-    <div class="container" id="container" preload="auto">
+    <div id="container" preload="auto">
       <audio id="soundFile" loop>
         <source
           id="track"
@@ -48,51 +37,26 @@
           type="audio/ogg"
         />
       </audio>
-      <!--desktop/large screens-->
       <div class="footer">
-        <input type="button" value="play/pause" onclick="togglePlay()" />
-        <input type="button" value="flashing images" onclick="toggleImages()" />
-        <input
-          type="button"
-          value="switch theme"
+        <button id="togglePlay" class="item" onclick="togglePlay()">
+          <span>play/pause</span>
+        </button>
+        <button id="toggleImages" class="item" onclick="toggleImages()">
+          <span>flashing images</span>
+        </button>
+        <button
+          id="toggleTheme"
+          class="item"
           onclick="togglePageTheme();toggleP5Theme()"
-        />
-        <input
-          type="button"
-          value="save a screenshot"
-          onclick="saveScreenshot()"
-        />
-        <input type="button" value="change track" onclick="toggleAudio()" />
-      </div>
-      <!--mobile-->
-      <div class="lowerGrid">
-        <div>
-          <input type="button" value="play/pause" onclick="togglePlay()" />
-        </div>
-        <div>
-          <input
-            type="button"
-            value="save a screenshot"
-            onclick="saveScreenshot()"
-          />
-        </div>
-        <div>
-          <input
-            type="button"
-            value="flashing images"
-            onclick="toggleImages()"
-          />
-        </div>
-        <div>
-          <input type="button" value="change track" onclick="toggleAudio()" />
-        </div>
-        <div>
-          <input
-            type="button"
-            value="switch theme"
-            onclick="togglePageTheme();toggleP5Theme()"
-          />
-        </div>
+        >
+          <span>switch theme</span>
+        </button>
+        <button id="saveScreenshot" class="item" onclick="saveScreenshot()">
+          <span>save a screenshot</span>
+        </button>
+        <button id="toggleAudio" class="item" onclick="toggleAudio()">
+          <span>change track</span>
+        </button>
       </div>
     </div>
   </body>

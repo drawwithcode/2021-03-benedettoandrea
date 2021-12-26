@@ -1,104 +1,117 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  font-family: "Inter", sans-serif;
-  color: var(--text);
-  background: var(--bg);
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
+html,
 body {
-  position: relative;
+  /* position, dimensions */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 0;
+  /* behavioral settings */
+  overflow: hidden;
+  /* styles, colours */
+  background: var(--bg);
+  /* fonts */
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
 }
 
 canvas {
+  /* behavioral settings */
   display: block;
 }
 
 .loadingclass {
-  position: relative;
-  height: 100%;
+  /* position, dimensions */
+  position: absolute;
   width: 100%;
+  height: 100%;
+  /* behavioral settings */
+  overflow: hidden;
+  /* styles, colours */
+  background-color: transparent;
 }
-.container {
-  position: relative;
-  height: 100%;
+
+#container {
+  /* position, dimensions */
+  position: absolute;
   width: 100%;
+  height: 100%;
+  /* behavioral settings */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header {
+  /* position, dimensions */
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   margin: 0px;
   padding: 10px;
-  color: var(--text);
+  /* styles, colours */
+  background: transparent;
 }
 
 .footer {
+  /* position, dimensions */
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   margin: 0px;
   padding: 10px;
-  color: var(--text);
+  /* styles, colours */
+  background: transparent;
 }
 
-.upperGrid {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  margin: 0px;
-  padding: 10px;
-  color: var(--text);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 0px;
-}
-
-.lowerGrid {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0px;
-  padding: 10px;
-  color: var(--text);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 0px;
-}
-
-input {
-  font-family: "Inter", sans-serif;
-  font-style: normal;
-  color: var(--text);
-  border: rgba(0, 0, 0, 0);
-  background-color: rgba(0, 0, 0, 0);
+.loadingMessage {
+  /* position, dimensions */
+  border: none;
   padding: 5px;
+  /* styles, colours */
+  background: transparent;
+  color: white;
+  mix-blend-mode: difference;
+  /* fonts */
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: small;
+  text-align: left;
 }
 
-/* responsiveness */
+.item {
+  /* position, dimensions */
+  border: none;
+  padding: 5px;
+  /* behavioral settings */
+  cursor: pointer;
+  /* styles, colours */
+  background: transparent;
+  color: white;
+  mix-blend-mode: difference;
+  /* fonts */
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: small;
+  text-align: left;
+}
+
 @media only screen and (max-device-width: 480px) {
-  .header,
   .footer {
-    display: none;
-  }
-}
-
-@media only screen and (min-device-width: 481px) {
-  .lowerGrid,
-  .upperGrid {
-    display: none;
+    /* behavioral settings */
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0px;
   }
 }
 

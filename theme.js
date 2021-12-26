@@ -1,9 +1,9 @@
-// function to set a given theme
+// set a given theme
 function setPageTheme(themeName) {
   document.documentElement.className = themeName;
 }
 
-// function to toggle between light and dark theme
+// toggle between themes (light/dark)
 function togglePageTheme() {
   var metaThemeColor = document.querySelector("meta[name=theme-color]");
   var currentTheme = document.documentElement.className;

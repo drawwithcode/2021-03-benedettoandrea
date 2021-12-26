@@ -12,8 +12,10 @@
    4) Autechre Live at BBC Radio 3 on 2003-03-30 (https://archive.org/details/Autechre2003-03-30)
 */
 
-// theme selector (255 = light, 0 = dark)
-var currentTheme = 255;
+// theming
+let currentTheme = "light";
+let themeBackground = 255;
+let themeFill = 0;
 
 // noise
 const octaves = 8;
@@ -47,11 +49,10 @@ function preload() {
 }
 
 function setup() {
-  // canvas initialisation
   createCanvas(windowWidth, windowHeight).parent("container");
+  frameRate(60);
   angleMode(DEGREES);
   rectMode(CENTER);
-  fill(10);
   noStroke();
 
   // noise setup
@@ -83,7 +84,8 @@ function setup() {
 }
 
 function draw() {
-  background(currentTheme);
+  background(themeBackground);
+  fill(themeFill);
 
   // grid system counters
   var i1 = 0;
@@ -345,14 +347,16 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// toggle the theme between light (255) and dark (0)
+// toggle between themes (light/dark)
 function toggleP5Theme() {
-  if (currentTheme === 255) {
-    currentTheme = 0;
-    fill(255);
-  } else if (currentTheme === 0) {
-    currentTheme = 255;
-    fill(0);
+  if (currentTheme === "dark") {
+    themeBackground = 255;
+    themeFill = 0;
+    currentTheme = "light";
+  } else if (currentTheme === "light") {
+    themeBackground = 0;
+    themeFill = 255;
+    currentTheme = "dark";
   }
 }
 
