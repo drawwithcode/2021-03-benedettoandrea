@@ -12,11 +12,6 @@
    4) Autechre Live at BBC Radio 3 on 2003-03-30 (https://archive.org/details/Autechre2003-03-30)
 */
 
-// theming
-let currentTheme = "light";
-let themeBackground = 255;
-let themeFill = 0;
-
 // noise
 const octaves = 8;
 const falloff = 0.5;
@@ -33,15 +28,20 @@ var imageList;
 var imageShow;
 var trackList = new Array();
 
-// control variables
-var flashingImages = 1;
-var releaseTitles = false;
-
 // audio control
 var trackState = "pause";
 var trackCurrentlyPlaying = 0;
 var trackNo = 0;
 var soundFile, amplitude, fft;
+
+// control variables
+var flashingImages = 1;
+var releaseTitles = false;
+
+// theming
+let currentTheme = "light";
+let themeBackground = 255;
+let themeFill = 0;
 
 function preload() {
   trackList = loadJSON("tracks.json");
@@ -329,11 +329,8 @@ function draw() {
   }
 }
 
-// generate a random integer from range, inclusive
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function randomImage() {
@@ -343,8 +340,35 @@ function randomImage() {
   );
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+// generate a random integer from range, inclusive
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// play or pause the current track
+function togglePlay() {
+  if (soundFile.paused) {
+    soundFile.play();
+    loop();
+    trackState = "play";
+  } else {
+    soundFile.pause();
+    noLoop();
+    trackState = "pause";
+  }
+}
+
+// toogle flashing images
+function toggleImages() {
+  if (flashingImages === 1) {
+    flashingImages = 0;
+    releaseTitles = false;
+  } else if (flashingImages === 0) {
+    flashingImages = 1;
+    releaseTitles = true;
+  }
 }
 
 // toggle between themes (light/dark)
@@ -380,30 +404,6 @@ function saveScreenshot() {
     saveCanvas("AE_" + releaseTitle + "_" + currentDate, "png");
   } else {
     saveCanvas("AE_" + currentDate, "png");
-  }
-}
-
-// toogle flashing images
-function toggleImages() {
-  if (flashingImages === 1) {
-    flashingImages = 0;
-    releaseTitles = false;
-  } else if (flashingImages === 0) {
-    flashingImages = 1;
-    releaseTitles = true;
-  }
-}
-
-// play or pause the current track
-function togglePlay() {
-  if (soundFile.paused) {
-    soundFile.play();
-    loop();
-    trackState = "play";
-  } else {
-    soundFile.pause();
-    noLoop();
-    trackState = "pause";
   }
 }
 
