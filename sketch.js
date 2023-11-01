@@ -60,10 +60,10 @@ function setup() {
 
   // load images inside an array
   for (let i = 0; i < imageList.images.length; i++) {
-    imageFile[i] = loadImage("./assets/images/" + imageList.images[i]);
+    imageFile[i] = loadImage("./assets/images/covers/" + imageList.images[i]);
   }
 
-  // select a random image insie the array to show before starting
+  // select a random image inside the array to show before starting
   randomImage();
 
   // audio setup
